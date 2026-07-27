@@ -23,7 +23,6 @@
     .container { background-color: var(--card-bg); border: 1px solid var(--border); border-radius: 16px; width: 100%; max-width: 480px; padding: 24px; box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.5); }
     .header { text-align: center; margin-bottom: 20px; }
     
-    /* TÍTULO CON TM DISCRETO */
     .header h1 { 
       font-size: 1.8rem; 
       font-weight: 800; 
@@ -45,7 +44,6 @@
       position: relative;
     }
     
-    /* SUBTÍTULO RESPONSIVE */
     .header p { 
       font-size: clamp(0.7rem, 3.4vw, 0.9rem); 
       color: var(--text-muted); 
@@ -54,7 +52,6 @@
       text-overflow: ellipsis; 
     }
 
-    /* SELECTOR CARRO / MOTO */
     .vehicle-selector { display: flex; background: #0f172a; padding: 4px; border-radius: 10px; margin-bottom: 16px; border: 1px solid var(--border); }
     .type-btn { flex: 1; padding: 8px; border: none; background: transparent; color: var(--text-muted); font-weight: 700; font-size: 0.85rem; cursor: pointer; border-radius: 6px; transition: all 0.2s; }
     .type-btn.active { background-color: var(--accent); color: #000; }
@@ -67,8 +64,32 @@
     label { display: block; font-size: 0.85rem; font-weight: 600; margin-bottom: 6px; color: #cbd5e1; }
     input, select { width: 100%; padding: 12px; background-color: #0f172a; border: 1px solid var(--border); border-radius: 8px; color: #fff; font-size: 0.95rem; outline: none; }
     input:focus, select:focus { border-color: var(--accent); }
+
+    /* CHECKBOX FLEXFUEL */
+    .checkbox-group {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: rgba(59, 130, 246, 0.08);
+      border: 1px dashed #3b82f6;
+      padding: 10px 12px;
+      border-radius: 8px;
+      margin-bottom: 16px;
+      cursor: pointer;
+    }
+    .checkbox-group input[type="checkbox"] {
+      width: 18px;
+      height: 18px;
+      accent-color: #3b82f6;
+      cursor: pointer;
+    }
+    .checkbox-group label {
+      margin-bottom: 0;
+      font-size: 0.8rem;
+      color: #93c5fd;
+      cursor: pointer;
+    }
     
-    /* NOTA DE SEGURIDAD */
     .note { 
       font-size: 0.75rem; 
       color: var(--text-muted); 
@@ -77,7 +98,6 @@
       text-align: justify; 
     }
 
-    /* NOTA TÉCNICA DINÁMICA (MOTOS/VIN) */
     .tech-note {
       font-size: 0.75rem;
       color: var(--text-muted);
@@ -90,7 +110,6 @@
       text-align: justify;
     }
 
-    /* TOOLTIP CENTRADO PERFECTO */
     .label-with-tooltip { display: flex; align-items: center; gap: 6px; margin-bottom: 6px; }
     .label-with-tooltip label { margin-bottom: 0; line-height: 1; }
     .tooltip-container { display: inline-flex; align-items: center; position: relative; }
@@ -144,7 +163,7 @@
     .result-box.incompatible { background-color: rgba(239, 68, 68, 0.1); border: 1px solid var(--danger); color: var(--danger); }
     .result-box.compatible-warning { background-color: rgba(234, 179, 8, 0.1); border: 1px solid var(--warning); color: var(--warning); }
     .result-box.compatible-ok { background-color: rgba(34, 197, 94, 0.1); border: 1px solid var(--accent); color: var(--accent); }
-    .result-box.compatible-flex { background-color: rgba(59, 130, 246, 0.1); border: 1px solid #3b82f6; color: #60a5fa; }
+    .result-box.compatible-flex { background-color: rgba(59, 130, 246, 0.15); border: 1px solid #3b82f6; color: #60a5fa; }
 
     .result-data { font-size: 0.85rem; color: var(--text-muted); margin: 10px 0; background: rgba(0,0,0,0.2); padding: 8px; border-radius: 6px; }
     .result-title { font-size: 1.15rem; font-weight: 800; margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.3px; }
@@ -166,7 +185,6 @@
     .disclaimer { font-size: 0.7rem; color: #64748b; line-height: 1.4; text-align: justify; margin-bottom: 8px; }
     .version-tag { font-size: 0.65rem; color: #475569; font-weight: 600; letter-spacing: 0.5px; margin-top: 12px; }
 
-    /* MODAL */
     .modal-backdrop {
       display: none;
       position: fixed;
@@ -234,7 +252,6 @@
         <input type="text" id="vin-input" placeholder="Ej. 1FA6P8CF" maxlength="8" style="text-transform: uppercase;">
         <p class="note">🛡️ <b>Seguridad Total:</b> Solo requerimos los primeros 8 dígitos (WMI/VDS). No solicitamos tu número de serie individual ni almacenamos tus búsquedas.</p>
 
-        <!-- AVISO TÉCNICO MOTOS -->
         <div id="moto-vin-notice" class="tech-note" style="display: none;">
           ℹ️ <b>Nota sobre Motocicletas:</b> En motos de baja cilindrada, la sección VDS del VIN suele codificar variantes de chasis y no el sistema de combustible. Para un diagnóstico óptimo, se sugiere la verificación por <b>Marca/Modelo/Año</b>.
         </div>
@@ -251,13 +268,22 @@
       </div>
       <div class="form-group">
         <label for="model-input">Modelo (Opcional):</label>
-        <input type="text" id="model-input" placeholder="Ej. Yaris, Pulsar, Civic, Apache...">
+        <input type="text" id="model-input" placeholder="Ej. Saveiro, Gol, Tracker, Flex, Civic, Apache...">
       </div>
       <div class="form-group">
         <label for="year-select">Año del Vehículo:</label>
         <select id="year-select">
           <option value="">-- Selecciona Año --</option>
         </select>
+      </div>
+
+      <!-- CASILLA DE VERIFICACIÓN PARA TECNOLOGÍA FLEXFUEL / FLEX -->
+      <div class="checkbox-group" id="flex-check-container">
+        <input type="checkbox" id="is-flex-check">
+        <label for="is-flex-check">
+          <b>¿Es versión FlexFuel / TotalFlex?</b><br>
+          <span style="font-size:0.7rem; color:#94a3b8;">(Tiene emblema 'FlexFuel', 'Flex', tapón de gasolina amarillo o proviene de Brasil/EE.UU.)</span>
+        </label>
       </div>
     </div>
 
@@ -281,7 +307,7 @@
         <span class="footer-link" onclick="reportarError()">Reporta un Problema</span>
       </div>
 
-      <div class="version-tag">v.0.0.2</div>
+      <div class="version-tag">v.0.0.3</div>
     </div>
   </div>
 
@@ -302,7 +328,7 @@
     let currentVehicle = 'car';
     let activeTab = 'vin';
 
-    const carBrands = ["Toyota", "Honda", "Mazda", "Nissan", "Hyundai", "Kia", "Mitsubishi", "Suzuki", "Chevrolet", "Ford", "Otra Marca"];
+    const carBrands = ["Volkswagen", "Chevrolet", "Ford", "Toyota", "Honda", "Hyundai", "Fiat", "Nissan", "GMC / RAM", "Mazda", "Mitsubishi", "Suzuki", "Otra Marca"];
     const motoBrands = ["Honda", "Suzuki", "Yamaha", "Bajaj", "TVS", "Freedom / Italika / Haojue", "KTM", "Hero", "BMW Motorrad", "Royal Enfield", "Otra Marca"];
 
     const carTooltip = `
@@ -330,6 +356,7 @@
       
       document.getElementById('tooltip-content').innerHTML = type === 'car' ? carTooltip : motoTooltip;
       document.getElementById('moto-vin-notice').style.display = (type === 'moto' && activeTab === 'vin') ? 'block' : 'none';
+      document.getElementById('flex-check-container').style.display = type === 'car' ? 'flex' : 'none';
 
       populateBrands();
       document.getElementById('result-box').style.display = 'none';
@@ -366,7 +393,7 @@
       document.getElementById('result-box').style.display = 'none';
     }
 
-    // --- EVALUACIÓN TÉCNICA v0.0.2 ---
+    // --- EVALUACIÓN TÉCNICA v0.0.3 ---
     function evaluar() {
       const resultBox = document.getElementById('result-box');
       const resultData = document.getElementById('result-data');
@@ -385,52 +412,57 @@
         datosIngresados = `[${currentVehicle === 'car' ? 'CARRO' : 'MOTO'}] VIN Analizado: ${vin}`;
         
         const charEngine = vin.charAt(7);
-        const flexChars = ['V', '2', '5', '8', 'K', '0', '3', 'F'];
+        const flexChars = ['V', '2', '5', '8', 'K', '0', '3', 'F', 'Z', '9'];
         
         if (flexChars.includes(charEngine)) {
           dictamen = {
-            titulo: "✅ SÍ PUEDES USAR ETANOL (FlexFuel)",
+            titulo: "✅ SÍ PUEDES USAR ETANOL (FlexFuel / E85)",
             clase: "compatible-flex",
-            desc: "Tu vehículo es FlexFuel (E85). Tu motor, inyectores y sellos fluorados están diseñados para tolerar desde mezclas estándar hasta mezclas de muy alto octanaje con etanol."
+            desc: "Tu vehículo cuenta con calibración de fábrica FlexFuel. Tu motor, sensores de oxígeno/combustible y componentes tolerate desde mezclas E10 hasta mezclas de muy alta concentración (E85/E100) sin inconvenientes."
           };
         } else {
           dictamen = {
-            titulo: "✅ SÍ PUEDES USAR ETANOL (Hasta E10)",
+            titulo: "✅ SÍ PUEDES USAR ETANOL (Hasta 10%)",
             clase: "compatible-ok",
-            desc: "Tu vehículo cuenta con homologación de fábrica para mezclas estándar de hasta 10% de etanol (E10). Puedes usar estas mezclas sin riesgo de degradación."
+            desc: "Tu vehículo cuenta con homologación estándar para mezclas E10 (10% etanol y 90% gasolina). Puedes usar esta mezcla con total confianza."
           };
         }
       } else {
         const brand = document.getElementById('brand-select').value;
-        const model = document.getElementById('model-input').value.trim() || 'General';
+        const model = document.getElementById('model-input').value.trim();
         const year = parseInt(document.getElementById('year-select').value);
+        const isFlexExplicit = document.getElementById('is-flex-check').checked;
 
         if (!brand || !year) {
           alert("Por favor selecciona la Marca y el Año.");
           return;
         }
 
-        datosIngresados = `[${currentVehicle === 'car' ? 'CARRO' : 'MOTO'}] ${brand.toUpperCase()} ${model.toUpperCase()} (${year})`;
+        const modelUpper = model.toUpperCase();
+        const isFlexByText = modelUpper.includes('FLEX') || modelUpper.includes('TOTALFLEX') || modelUpper.includes('E85');
+        const isFlexVehicle = isFlexExplicit || isFlexByText;
 
-        // Lógica reestructurada para ser directa y clara
+        datosIngresados = `[${currentVehicle === 'car' ? 'CARRO' : 'MOTO'}] ${brand.toUpperCase()} ${model ? modelUpper : 'GENERAL'} (${year}) ${isFlexVehicle ? '⚡ [FLEX]' : ''}`;
+
         if (currentVehicle === 'car') {
-          if (['Ford', 'Chevrolet', 'GMC', 'RAM'].includes(brand) && year >= 2010) {
+          // Si fue marcado como Flex, introdujo la palabra "Flex" o coincide con patrones conocidos
+          if (isFlexVehicle) {
             dictamen = {
-              titulo: "✅ SÍ PUEDES USAR ETANOL (FlexFuel / E85)",
+              titulo: "✅ SÍ PUEDES USAR ETANOL (FlexFuel / E85-E100)",
               clase: "compatible-flex",
-              desc: "Tu carro cuenta con calibración de motor y líneas de combustible aptas para concentraciones altas de etanol sin ningún problema."
+              desc: "¡Excelente! Tu vehículo es de tecnología Flex (FlexFuel / TotalFlex). Cuenta con sensor ECU/Lambda para ajustar automáticamente la inyección y componentes resistentes para trabajar con mezclas estándar (E10) o concentraciones altas de etanol."
             };
           } else if (year >= 2001) {
             dictamen = {
               titulo: "✅ SÍ PUEDES USAR ETANOL (Hasta 10%)",
               clase: "compatible-ok",
-              desc: "Tu vehículo cumple con las normativas post-2001. Su sistema de inyección y mangueras sintéticas soportan perfectamente mezclas E10."
+              desc: "Tu vehículo está preparado de fábrica para soportar mezclas E10 (10% etanol). Sus empaques sintéticos e inyección multipunto no sufrirán degradación."
             };
           } else {
             dictamen = {
               titulo: "🚨 DEFINITIVAMENTE NO USAR ETANOL",
               clase: "incompatible",
-              desc: "Riesgo alto de daño mecánico. Por el año de tu vehículo, el etanol actuará como solvente dañando mangueras de goma, sellos y provocando corrosión en el sistema de combustible."
+              desc: "Riesgo alto de daño mecánico. Por el año de tu vehículo (anterior a 2001), el etanol actuará como solvente disolviendo empaques antiguos de goma y generando corrosión en el carburador o depósito."
             };
           }
         } else {
@@ -439,19 +471,19 @@
             dictamen = {
               titulo: "✅ SÍ PUEDES USAR ETANOL (Hasta 10%)",
               clase: "compatible-ok",
-              desc: "Tu moto tiene inyección electrónica y empaques resistentes. Puedes usar mezclas E10. (Recomendación: evita dejar la moto sin encender por más de 30 días si el tanque está lleno)."
+              desc: "Tu moto cuenta con inyección electrónica y empaques aptos para mezclas E10. (Recomendación: evita dejar la moto estacionada por más de 30 días con el tanque lleno)."
             };
           } else if (year >= 2009) {
             dictamen = {
               titulo: "⚠️ ÚSALO CON PRECAUCIÓN",
               clase: "compatible-warning",
-              desc: "Apto para uso diario constante. Sin embargo, al ser un sistema carburado, si dejas la moto estancada semanas sin usar, el etanol absorberá agua y podría tapar agujas o disolver empaques."
+              desc: "Apto para uso diario continuo. Sin embargo, al ser carburada o de primera generación de inyección, si la dejas guardada por semanas el etanol puede absorber agua y obstruir las agujas del carburador."
             };
           } else {
             dictamen = {
               titulo: "🚨 DEFINITIVAMENTE NO USAR ETANOL",
               clase: "incompatible",
-              desc: "No compatible. Los carburadores de bronce/aluminio y diafragmas de goma antigua de este modelo sufren corrosión y desgaste prematuro por el etanol."
+              desc: "No compatible. Los carburadores de bronce/aluminio y diafragmas antiguos sufren corrosión y desgaste prematuro al contacto con mezclas de etanol."
             };
           }
         }
@@ -477,23 +509,20 @@
       if (type === 'faq') {
         title.innerText = "Preguntas Frecuentes";
         body.innerHTML = `
-          <h4>1. ¿Qué es el Etanol E10 y por qué debo verificarlo?</h4>
-          <p>El E10 es una mezcla de 90% gasolina y 10% etanol. Aunque la mayoría de vehículos modernos lo soportan, en autos o motos más antiguos o no preparados puede corroer el sistema de combustible.</p>
+          <h4>1. ¿Qué significa que mi carro sea FlexFuel o Flex?</h4>
+          <p>Un vehículo FlexFuel / TotalFlex cuenta con software en la computadora (ECU) e inyectores adaptativos que le permiten quemar desde gasolina normal (E0/E10) hasta mezclas con alto contenido de etanol (E85 a E100) sin dañar ningún componente.</p>
           
-          <h4>2. ¿Por qué solo solicitan los primeros 8 dígitos del VIN?</h4>
-          <p>Los primeros 8 dígitos (WMI y VDS) corresponden únicamente a la marca, modelo y especificación del motor. Los últimos dígitos son tu número de serie personal, el cual <b>no pedimos ni necesitamos</b> para garantizar tu anonimato.</p>
-          
-          <h4>3. ¿De dónde provienen los datos?</h4>
-          <p>ChitaTest™ cruza datos de homologación técnica, normativas de fabricantes e información estándar de la industria automotriz.</p>
+          <h4>2. ¿Por qué solo piden 8 dígitos del VIN?</h4>
+          <p>Los primeros 8 dígitos corresponden al estándar WMI/VDS que especifica la marca, línea y motorización. No pedimos tu número de serie individual por razones de privacidad total.</p>
         `;
       } else if (type === 'privacy') {
         title.innerText = "Política de Privacidad";
         body.innerHTML = `
           <p>En <b>Chita™</b> priorizamos tu privacidad al 100%:</p>
           <ul>
-            <li><b>Sin almacenamiento:</b> Ningún VIN, marca, modelo ni consulta queda guardada en servidores externos.</li>
-            <li><b>Procesamiento Local:</b> Las evaluaciones de compatibilidad se calculan dentro de tu propio navegador.</li>
-            <li><b>Cero Cookies o Rastreo:</b> No rastreamos tu navegación ni solicitamos datos personales o correos electrónicos.</li>
+            <li><b>Sin almacenamiento:</b> Ningún VIN, marca o búsqueda queda registrada.</li>
+            <li><b>Procesamiento Local:</b> Las evaluaciones de compatibilidad corren en tu navegador.</li>
+            <li><b>Cero Rastreo:</b> Sin cookies ni recolección de correos electrónicos.</li>
           </ul>
         `;
       }
@@ -509,7 +538,6 @@
       if (e.target.id === 'info-modal') closeModal();
     }
 
-    // Inicialización
     setVehicleType('car');
   </script>
 </body>
