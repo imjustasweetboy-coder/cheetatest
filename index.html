@@ -409,7 +409,7 @@
       document.getElementById('result-box').style.display = 'none';
     }
 
-    // --- EVALUACIÓN TÉCNICA v0.0.4 ---
+    // --- EVALUACIÓN TÉCNICA BLINDADA v0.0.4 ---
     function evaluar() {
       const resultBox = document.getElementById('result-box');
       const resultData = document.getElementById('result-data');
@@ -460,25 +460,26 @@
           const isModelInDatabase = knownFlexModels.some(flexName => modelUpper.includes(flexName));
           const isFlexVehicle = isFlexExplicit || modelUpper.includes('FLEX') || modelUpper.includes('TOTALFLEX') || isModelInDatabase;
 
-          datosIngresados = `[CARRO] ${brand.toUpperCase()} ${model ? modelUpper : 'GENERAL'} (${year}) ${isFlexVehicle ? '⚡ [FLEX]' : ''}`;
+          datosIngresados = `[CARRO] ${brand.toUpperCase()} ${model ? modelUpper : 'GENERAL'} (${year}) ${isFlexExplicit ? '⚡ [Flex marcado]' : ''}`;
 
-          if (isFlexVehicle) {
+          // BLINDAJE CONTRA ERROR HUMANO: La antigüedad impera sobre cualquier casilla
+          if (year < 2001) {
+            dictamen = {
+              titulo: "🚨 DEFINITIVAMENTE NO USAR ETANOL",
+              clase: "incompatible",
+              desc: `Atención: Aunque hayas marcado la opción Flex, por el año de fabricación (${year}), este vehículo utiliza carburador o líneas de combustible de goma no aptas para alcoholes. El etanol actuará como solvente disolviendo empaques antiguos y generando corrosión en el sistema.`
+            };
+          } else if (isFlexVehicle) {
             dictamen = {
               titulo: "✅ SÍ PUEDES USAR ETANOL (FlexFuel / TotalFlex)",
               clase: "compatible-flex",
-              desc: `¡Buenas noticias! Este modelo (${model ? modelUpper : brand}) se comercializa con tecnología FlexFuel / TotalFlex. Cuenta con sistema adaptativo en la computadora (ECU) e inyectores aptos para quemar mezclas estándar (E10) hasta mezclas de alto octanaje de etanol.`
+              desc: `¡Buenas noticias! Este modelo (${model ? modelUpper : brand}) cuenta con tecnología FlexFuel / TotalFlex. Tiene sistema adaptativo en la computadora (ECU) e inyectores preparados para quemar mezclas estándar (E10) o concentraciones elevadas de etanol.`
             };
-          } else if (year >= 2001) {
+          } else {
             dictamen = {
               titulo: "✅ SÍ PUEDES USAR ETANOL (Hasta 10%)",
               clase: "compatible-ok",
               desc: "Tu vehículo está preparado de fábrica para soportar mezclas E10 (10% etanol). Sus empaques sintéticos e inyección multipunto no sufrirán degradación."
-            };
-          } else {
-            dictamen = {
-              titulo: "🚨 DEFINITIVAMENTE NO USAR ETANOL",
-              clase: "incompatible",
-              desc: "Riesgo alto de daño mecánico. Por el año de tu vehículo (anterior a 2001), el etanol actuará como solvente disolviendo empaques antiguos de goma y generando corrosión en el carburador o depósito."
             };
           }
         } else {
@@ -486,23 +487,23 @@
           const isPopularFI = popularMotosFI.some(m => modelUpper.includes(m));
           datosIngresados = `[MOTO] ${brand.toUpperCase()} ${model ? modelUpper : 'GENERAL'} (${year})`;
 
-          if (year >= 2018 || isPopularFI) {
-            dictamen = {
-              titulo: "✅ SÍ PUEDES USAR ETANOL (Hasta 10%)",
-              clase: "compatible-ok",
-              desc: `Tu moto (${model ? modelUpper : 'de inyección / reciente'}) cuenta con inyección electrónica y empaques sintéticos que toleran perfectamente mezclas E10. 💡 Consejo motero: Si vas a dejar la moto guardada sin usar por más de 3 semanas, procura dejar el tanque con poca gasolina o consumirla antes, para evitar acumulación de humedad por condensación.`
-            };
-          } else if (year >= 2008) {
-            dictamen = {
-              titulo: "⚠️ ÚSALO CON PRECAUCIÓN (Sistema Carburado)",
-              clase: "compatible-warning",
-              desc: "Apto para rodar a diario. Al ser carburada, si la moto pasa semanas parada sin usar, el etanol en el tanque puede absorber humedad y obstruir las chicleras o degradar el diafragma. Mantén tu carburador limpio."
-            };
-          } else {
+          if (year < 2008) {
             dictamen = {
               titulo: "🚨 DEFINITIVAMENTE NO USAR ETANOL",
               clase: "incompatible",
               desc: "No recomendado. Los carburadores de bronce/aluminio y las mangueras de goma antiguas de este año sufren corrosión y desgaste acelerado al contacto con mezclas de etanol."
+            };
+          } else if (year >= 2018 || isPopularFI) {
+            dictamen = {
+              titulo: "✅ SÍ PUEDES USAR ETANOL (Hasta 10%)",
+              clase: "compatible-ok",
+              desc: `Tu moto (${model ? modelUpper : 'de inyección / reciente'}) cuenta con inyección electrónica y empaques sintéticos que toleran perfectamente mezclas E10. 💡 Consejo motero: Si vas a dejar la moto guardada sin usar por más de 3 semanas, procura dejar el tanque con poca gasolina o consumirla antes para evitar condensación.`
+            };
+          } else {
+            dictamen = {
+              titulo: "⚠️ ÚSALO CON PRECAUCIÓN (Sistema Carburado)",
+              clase: "compatible-warning",
+              desc: "Apto para rodar a diario. Al ser carburada, si la moto pasa semanas parada sin usar, el etanol en el tanque puede absorber humedad y obstruir las chicleras o degradar el diafragma. Mantén tu carburador limpio."
             };
           }
         }
