@@ -65,7 +65,6 @@
     input, select { width: 100%; padding: 12px; background-color: #0f172a; border: 1px solid var(--border); border-radius: 8px; color: #fff; font-size: 0.95rem; outline: none; }
     input:focus, select:focus { border-color: var(--accent); }
 
-    /* CHECKBOX FLEXFUEL */
     .checkbox-group {
       display: flex;
       align-items: center;
@@ -268,7 +267,7 @@
       </div>
       <div class="form-group">
         <label for="model-input">Modelo (Opcional):</label>
-        <input type="text" id="model-input" placeholder="Ej. Saveiro, Gol, Tracker, Flex, Civic, Apache...">
+        <input type="text" id="model-input" placeholder="Ej. Pulsar, Saveiro, Apache, Tracker, Civic...">
       </div>
       <div class="form-group">
         <label for="year-select">Año del Vehículo:</label>
@@ -277,12 +276,12 @@
         </select>
       </div>
 
-      <!-- CASILLA DE VERIFICACIÓN PARA TECNOLOGÍA FLEXFUEL / FLEX -->
+      <!-- CHECKBOX FLEXFUEL PARA CARROS -->
       <div class="checkbox-group" id="flex-check-container">
         <input type="checkbox" id="is-flex-check">
         <label for="is-flex-check">
           <b>¿Es versión FlexFuel / TotalFlex?</b><br>
-          <span style="font-size:0.7rem; color:#94a3b8;">(Tiene emblema 'FlexFuel', 'Flex', tapón de gasolina amarillo o proviene de Brasil/EE.UU.)</span>
+          <span style="font-size:0.7rem; color:#94a3b8;">(Tiene emblema 'FlexFuel', 'Flex', tapón amarillo o proviene de Brasil/EE.UU.)</span>
         </label>
       </div>
     </div>
@@ -307,7 +306,7 @@
         <span class="footer-link" onclick="reportarError()">Reporta un Problema</span>
       </div>
 
-      <div class="version-tag">v.0.0.3</div>
+      <div class="version-tag">v.0.0.4</div>
     </div>
   </div>
 
@@ -329,7 +328,24 @@
     let activeTab = 'vin';
 
     const carBrands = ["Volkswagen", "Chevrolet", "Ford", "Toyota", "Honda", "Hyundai", "Fiat", "Nissan", "GMC / RAM", "Mazda", "Mitsubishi", "Suzuki", "Otra Marca"];
-    const motoBrands = ["Honda", "Suzuki", "Yamaha", "Bajaj", "TVS", "Freedom / Italika / Haojue", "KTM", "Hero", "BMW Motorrad", "Royal Enfield", "Otra Marca"];
+    const motoBrands = ["Bajaj", "Honda", "TVS", "Yamaha", "Suzuki", "Freedom / Italika / Haojue", "KTM", "Hero", "BMW Motorrad", "Royal Enfield", "Otra Marca"];
+
+    // Modelos reconocidos por defecto como FlexFuel / TotalFlex
+    const knownFlexModels = [
+      "SAVEIRO", "GOL", "FOX", "VOYAGE", "SURAN",
+      "TRACKER", "ONIX", "PRISMA", "SPIN", "S10", "CELTA", "MONTANA",
+      "HB20", "CRETA",
+      "UNO", "PALIO", "SIENA", "STRADA", "MOBI", "PUNTO",
+      "COROLLA FLEX", "ETIOS", "YARIS FLEX",
+      "KA", "ECOSPORT", "RANGER FLEX", "F150 FLEX", "F-150 FLEX", "MUSTANG FLEX",
+      "RENEGADE FLEX", "COMPASS FLEX"
+    ];
+
+    // Modelos populares de motos con inyección electrónica (FI) habituales en la región
+    const popularMotosFI = [
+      "PULSAR", "APACHE", "GIXXER", "FZ", "DUKE", "DOMINAR", 
+      "NXT", "CB190", "R15", "XR190", "INTRUDER", "AVENGER"
+    ];
 
     const carTooltip = `
       <b>¿Dónde encontrar el VIN en un Carro?</b>
@@ -393,7 +409,7 @@
       document.getElementById('result-box').style.display = 'none';
     }
 
-    // --- EVALUACIÓN TÉCNICA v0.0.3 ---
+    // --- EVALUACIÓN TÉCNICA v0.0.4 ---
     function evaluar() {
       const resultBox = document.getElementById('result-box');
       const resultData = document.getElementById('result-data');
@@ -418,20 +434,19 @@
           dictamen = {
             titulo: "✅ SÍ PUEDES USAR ETANOL (FlexFuel / E85)",
             clase: "compatible-flex",
-            desc: "Tu vehículo cuenta con calibración de fábrica FlexFuel. Tu motor, sensores de oxígeno/combustible y componentes tolerate desde mezclas E10 hasta mezclas de muy alta concentración (E85/E100) sin inconvenientes."
+            desc: "Tu vehículo cuenta con calibración de fábrica FlexFuel (detectado por VIN). Tu motor, sensores y componentes de combustible están totalmente diseñados para operar tanto con mezclas estándar (E10) como con concentraciones elevadas."
           };
         } else {
           dictamen = {
             titulo: "✅ SÍ PUEDES USAR ETANOL (Hasta 10%)",
             clase: "compatible-ok",
-            desc: "Tu vehículo cuenta con homologación estándar para mezclas E10 (10% etanol y 90% gasolina). Puedes usar esta mezcla con total confianza."
+            desc: "Tu vehículo cuenta con homologación estándar de fábrica para mezclas E10 (10% etanol y 90% gasolina). Puedes usar esta mezcla con total confianza."
           };
         }
       } else {
         const brand = document.getElementById('brand-select').value;
         const model = document.getElementById('model-input').value.trim();
         const year = parseInt(document.getElementById('year-select').value);
-        const isFlexExplicit = document.getElementById('is-flex-check').checked;
 
         if (!brand || !year) {
           alert("Por favor selecciona la Marca y el Año.");
@@ -439,18 +454,19 @@
         }
 
         const modelUpper = model.toUpperCase();
-        const isFlexByText = modelUpper.includes('FLEX') || modelUpper.includes('TOTALFLEX') || modelUpper.includes('E85');
-        const isFlexVehicle = isFlexExplicit || isFlexByText;
-
-        datosIngresados = `[${currentVehicle === 'car' ? 'CARRO' : 'MOTO'}] ${brand.toUpperCase()} ${model ? modelUpper : 'GENERAL'} (${year}) ${isFlexVehicle ? '⚡ [FLEX]' : ''}`;
 
         if (currentVehicle === 'car') {
-          // Si fue marcado como Flex, introdujo la palabra "Flex" o coincide con patrones conocidos
+          const isFlexExplicit = document.getElementById('is-flex-check').checked;
+          const isModelInDatabase = knownFlexModels.some(flexName => modelUpper.includes(flexName));
+          const isFlexVehicle = isFlexExplicit || modelUpper.includes('FLEX') || modelUpper.includes('TOTALFLEX') || isModelInDatabase;
+
+          datosIngresados = `[CARRO] ${brand.toUpperCase()} ${model ? modelUpper : 'GENERAL'} (${year}) ${isFlexVehicle ? '⚡ [FLEX]' : ''}`;
+
           if (isFlexVehicle) {
             dictamen = {
-              titulo: "✅ SÍ PUEDES USAR ETANOL (FlexFuel / E85-E100)",
+              titulo: "✅ SÍ PUEDES USAR ETANOL (FlexFuel / TotalFlex)",
               clase: "compatible-flex",
-              desc: "¡Excelente! Tu vehículo es de tecnología Flex (FlexFuel / TotalFlex). Cuenta con sensor ECU/Lambda para ajustar automáticamente la inyección y componentes resistentes para trabajar con mezclas estándar (E10) o concentraciones altas de etanol."
+              desc: `¡Buenas noticias! Este modelo (${model ? modelUpper : brand}) se comercializa con tecnología FlexFuel / TotalFlex. Cuenta con sistema adaptativo en la computadora (ECU) e inyectores aptos para quemar mezclas estándar (E10) hasta mezclas de alto octanaje de etanol.`
             };
           } else if (year >= 2001) {
             dictamen = {
@@ -466,24 +482,27 @@
             };
           }
         } else {
-          // Motocicletas
-          if (year >= 2018) {
+          // EVALUACIÓN DE MOTOCICLETAS
+          const isPopularFI = popularMotosFI.some(m => modelUpper.includes(m));
+          datosIngresados = `[MOTO] ${brand.toUpperCase()} ${model ? modelUpper : 'GENERAL'} (${year})`;
+
+          if (year >= 2018 || isPopularFI) {
             dictamen = {
               titulo: "✅ SÍ PUEDES USAR ETANOL (Hasta 10%)",
               clase: "compatible-ok",
-              desc: "Tu moto cuenta con inyección electrónica y empaques aptos para mezclas E10. (Recomendación: evita dejar la moto estacionada por más de 30 días con el tanque lleno)."
+              desc: `Tu moto (${model ? modelUpper : 'de inyección / reciente'}) cuenta con inyección electrónica y empaques sintéticos que toleran perfectamente mezclas E10. 💡 Consejo motero: Si vas a dejar la moto guardada sin usar por más de 3 semanas, procura dejar el tanque con poca gasolina o consumirla antes, para evitar acumulación de humedad por condensación.`
             };
-          } else if (year >= 2009) {
+          } else if (year >= 2008) {
             dictamen = {
-              titulo: "⚠️ ÚSALO CON PRECAUCIÓN",
+              titulo: "⚠️ ÚSALO CON PRECAUCIÓN (Sistema Carburado)",
               clase: "compatible-warning",
-              desc: "Apto para uso diario continuo. Sin embargo, al ser carburada o de primera generación de inyección, si la dejas guardada por semanas el etanol puede absorber agua y obstruir las agujas del carburador."
+              desc: "Apto para rodar a diario. Al ser carburada, si la moto pasa semanas parada sin usar, el etanol en el tanque puede absorber humedad y obstruir las chicleras o degradar el diafragma. Mantén tu carburador limpio."
             };
           } else {
             dictamen = {
               titulo: "🚨 DEFINITIVAMENTE NO USAR ETANOL",
               clase: "incompatible",
-              desc: "No compatible. Los carburadores de bronce/aluminio y diafragmas antiguos sufren corrosión y desgaste prematuro al contacto con mezclas de etanol."
+              desc: "No recomendado. Los carburadores de bronce/aluminio y las mangueras de goma antiguas de este año sufren corrosión y desgaste acelerado al contacto con mezclas de etanol."
             };
           }
         }
@@ -509,20 +528,23 @@
       if (type === 'faq') {
         title.innerText = "Preguntas Frecuentes";
         body.innerHTML = `
-          <h4>1. ¿Qué significa que mi carro sea FlexFuel o Flex?</h4>
-          <p>Un vehículo FlexFuel / TotalFlex cuenta con software en la computadora (ECU) e inyectores adaptativos que le permiten quemar desde gasolina normal (E0/E10) hasta mezclas con alto contenido de etanol (E85 a E100) sin dañar ningún componente.</p>
+          <h4>1. ¿Qué significa que un vehículo sea FlexFuel / TotalFlex?</h4>
+          <p>Un vehículo FlexFuel cuenta con sensores e inyectores adaptativos que le permiten quemar desde gasolina convencional hasta mezclas con alto contenido de etanol (E85/E100) sin dañar componentes ni requerir modificaciones.</p>
+
+          <h4>2. ¿Puedo usar etanol en mi motocicleta?</h4>
+          <p>Las motos modernas con inyección electrónica (como las Pulsar FI, Apache FI, FZ, etc.) soportan mezclas E10 (10% etanol) de forma completamente segura para uso diario.</p>
           
-          <h4>2. ¿Por qué solo piden 8 dígitos del VIN?</h4>
-          <p>Los primeros 8 dígitos corresponden al estándar WMI/VDS que especifica la marca, línea y motorización. No pedimos tu número de serie individual por razones de privacidad total.</p>
+          <h4>3. ¿Por qué solo piden 8 dígitos del VIN?</h4>
+          <p>Los primeros 8 dígitos corresponden al estándar WMI/VDS que especifica la marca, línea y motorización de fábrica. No pedimos tu número de serie individual por privacidad total.</p>
         `;
       } else if (type === 'privacy') {
         title.innerText = "Política de Privacidad";
         body.innerHTML = `
           <p>En <b>Chita™</b> priorizamos tu privacidad al 100%:</p>
           <ul>
-            <li><b>Sin almacenamiento:</b> Ningún VIN, marca o búsqueda queda registrada.</li>
-            <li><b>Procesamiento Local:</b> Las evaluaciones de compatibilidad corren en tu navegador.</li>
-            <li><b>Cero Rastreo:</b> Sin cookies ni recolección de correos electrónicos.</li>
+            <li><b>Sin almacenamiento:</b> Ningún VIN, marca o consulta queda registrada en servidores.</li>
+            <li><b>Procesamiento Local:</b> Las evaluaciones de compatibilidad se calculan dentro de tu propio navegador.</li>
+            <li><b>Cero Rastreo:</b> Sin cookies ni recolección de datos personales.</li>
           </ul>
         `;
       }
