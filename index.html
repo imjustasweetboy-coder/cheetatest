@@ -147,8 +147,8 @@
     .result-box.compatible-flex { background-color: rgba(59, 130, 246, 0.1); border: 1px solid #3b82f6; color: #60a5fa; }
 
     .result-data { font-size: 0.85rem; color: var(--text-muted); margin: 10px 0; background: rgba(0,0,0,0.2); padding: 8px; border-radius: 6px; }
-    .result-title { font-size: 1.1rem; font-weight: 800; margin-bottom: 6px; text-transform: uppercase; }
-    .result-desc { font-size: 0.85rem; color: #f8fafc; margin-top: 6px; line-height: 1.5; text-align: justify; }
+    .result-title { font-size: 1.15rem; font-weight: 800; margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.3px; }
+    .result-desc { font-size: 0.85rem; color: #f8fafc; margin-top: 8px; line-height: 1.5; text-align: justify; }
 
     .footer { text-align: center; margin-top: 24px; font-size: 0.8rem; color: var(--text-muted); border-top: 1px solid var(--border); padding-top: 16px; }
 
@@ -389,15 +389,15 @@
         
         if (flexChars.includes(charEngine)) {
           dictamen = {
-            titulo: "COMPATIBLE ≥ E10 (FlexFuel / E85)",
+            titulo: "✅ SÍ PUEDES USAR ETANOL (FlexFuel)",
             clase: "compatible-flex",
-            desc: "Sistema homologado con sensores de oxígeno de banda ancha y elastómeros fluorados (FKM). Tolerancia nativa para mezclas de alto octanaje con etanol."
+            desc: "Tu vehículo es FlexFuel (E85). Tu motor, inyectores y sellos fluorados están diseñados para tolerar desde mezclas estándar hasta mezclas de muy alto octanaje con etanol."
           };
         } else {
           dictamen = {
-            titulo: "COMPATIBLE ≤ E10",
+            titulo: "✅ SÍ PUEDES USAR ETANOL (Hasta E10)",
             clase: "compatible-ok",
-            desc: "Homologación estándar de fábrica. Mapeo de inyección ECU apto para compensar la densidad estequiométrica del E10. Líneas y sellos sintéticos resistentes."
+            desc: "Tu vehículo cuenta con homologación de fábrica para mezclas estándar de hasta 10% de etanol (E10). Puedes usar estas mezclas sin riesgo de degradación."
           };
         }
       } else {
@@ -412,46 +412,46 @@
 
         datosIngresados = `[${currentVehicle === 'car' ? 'CARRO' : 'MOTO'}] ${brand.toUpperCase()} ${model.toUpperCase()} (${year})`;
 
-        // Lógica diferenciada por tipo y año
+        // Lógica reestructurada para ser directa y clara
         if (currentVehicle === 'car') {
           if (['Ford', 'Chevrolet', 'GMC', 'RAM'].includes(brand) && year >= 2010) {
             dictamen = {
-              titulo: "COMPATIBLE E10 / E85 (FlexFuel)",
+              titulo: "✅ SÍ PUEDES USAR ETANOL (FlexFuel / E85)",
               clase: "compatible-flex",
-              desc: "Plataforma con calibración de motor y materiales aptos para etanol de alta concentración (E85)."
+              desc: "Tu carro cuenta con calibración de motor y líneas de combustible aptas para concentraciones altas de etanol sin ningún problema."
             };
           } else if (year >= 2001) {
             dictamen = {
-              titulo: "COMPATIBLE ≤ 10% (E10)",
+              titulo: "✅ SÍ PUEDES USAR ETANOL (Hasta 10%)",
               clase: "compatible-ok",
-              desc: "Vehículo compatible con normativas EPA/OBD-II post-2001. Sistema de combustible sellado apto para mezclas E10 sin degradación de empaques."
+              desc: "Tu vehículo cumple con las normativas post-2001. Su sistema de inyección y mangueras sintéticas soportan perfectamente mezclas E10."
             };
           } else {
             dictamen = {
-              titulo: "NO COMPATIBLE (> E5)",
+              titulo: "🚨 DEFINITIVAMENTE NO USAR ETANOL",
               clase: "incompatible",
-              desc: "Riesgo de corrosión en aleaciones no anodizadas y degradación en mangueras de nitrilo (NBR). La naturaleza higroscópica del etanol puede causar condensación en el tanque."
+              desc: "Riesgo alto de daño mecánico. Por el año de tu vehículo, el etanol actuará como solvente dañando mangueras de goma, sellos y provocando corrosión en el sistema de combustible."
             };
           }
         } else {
           // Motocicletas
           if (year >= 2018) {
             dictamen = {
-              titulo: "COMPATIBLE ≤ 10% (Inyección Electrónica)",
+              titulo: "✅ SÍ PUEDES USAR ETANOL (Hasta 10%)",
               clase: "compatible-ok",
-              desc: "Inyección PGM-FI/FI con sellos de fluorocarbono (Viton). Compatible con E10. Se recomienda no mantener la moto inactiva por más de 30 días con mezcla almacenada."
+              desc: "Tu moto tiene inyección electrónica y empaques resistentes. Puedes usar mezclas E10. (Recomendación: evita dejar la moto sin encender por más de 30 días si el tanque está lleno)."
             };
           } else if (year >= 2009) {
             dictamen = {
-              titulo: "PRECAUCIÓN E5 / E10 (Sistemas Carburados)",
+              titulo: "⚠️ ÚSALO CON PRECAUCIÓN",
               clase: "compatible-warning",
-              desc: "Apto para uso continuo. En sistemas carburados, el etanol actúa como solvente: si el vehículo pasa semanas estancado, puede disolver resinas y corroer agujas de bronce."
+              desc: "Apto para uso diario constante. Sin embargo, al ser un sistema carburado, si dejas la moto estancada semanas sin usar, el etanol absorberá agua y podría tapar agujas o disolver empaques."
             };
           } else {
             dictamen = {
-              titulo: "NO COMPATIBLE (> E0 / E2)",
+              titulo: "🚨 DEFINITIVAMENTE NO USAR ETANOL",
               clase: "incompatible",
-              desc: "Carburadores de latón/aluminio sensible y diafragmas de goma natural vulnerables al ataque químico y a la separación de fases (agua/etanol)."
+              desc: "No compatible. Los carburadores de bronce/aluminio y diafragmas de goma antigua de este modelo sufren corrosión y desgaste prematuro por el etanol."
             };
           }
         }
