@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ChitaTest™</title>
+  <title>ChitaTest™ — Verificación de Compatibilidad de Etanol</title>
   <style>
     :root {
       --bg-color: #0f172a;
@@ -23,7 +23,7 @@
     .container { background-color: var(--card-bg); border: 1px solid var(--border); border-radius: 16px; width: 100%; max-width: 480px; padding: 24px; box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.5); }
     .header { text-align: center; margin-bottom: 20px; }
     
-    /* TITULO CON TM DISCRETO */
+    /* TÍTULO CON TM DISCRETO */
     .header h1 { 
       font-size: 1.8rem; 
       font-weight: 800; 
@@ -45,7 +45,7 @@
       position: relative;
     }
     
-    /* SUBTÍTULO RESPONSIVE (Ajuste para una sola línea) */
+    /* SUBTÍTULO RESPONSIVE */
     .header p { 
       font-size: clamp(0.7rem, 3.4vw, 0.9rem); 
       color: var(--text-muted); 
@@ -68,7 +68,7 @@
     input, select { width: 100%; padding: 12px; background-color: #0f172a; border: 1px solid var(--border); border-radius: 8px; color: #fff; font-size: 0.95rem; outline: none; }
     input:focus, select:focus { border-color: var(--accent); }
     
-    /* NOTA DE SEGURIDAD JUSTIFICADA */
+    /* NOTA DE SEGURIDAD */
     .note { 
       font-size: 0.75rem; 
       color: var(--text-muted); 
@@ -77,10 +77,23 @@
       text-align: justify; 
     }
 
-    /* TOOLTIP (?) */
+    /* NOTA TÉCNICA DINÁMICA (MOTOS/VIN) */
+    .tech-note {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      background: rgba(59, 130, 246, 0.08);
+      border-left: 3px solid #3b82f6;
+      padding: 10px 12px;
+      border-radius: 4px;
+      margin-top: 12px;
+      line-height: 1.4;
+      text-align: justify;
+    }
+
+    /* TOOLTIP CENTRADO PERFECTO */
     .label-with-tooltip { display: flex; align-items: center; gap: 6px; margin-bottom: 6px; }
     .label-with-tooltip label { margin-bottom: 0; line-height: 1; }
-    .tooltip-container { display: inline-flex; align-items: center; }
+    .tooltip-container { display: inline-flex; align-items: center; position: relative; }
     .tooltip-icon {
       display: inline-flex;
       align-items: center;
@@ -129,12 +142,13 @@
     @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
     .result-box.incompatible { background-color: rgba(239, 68, 68, 0.1); border: 1px solid var(--danger); color: var(--danger); }
-    .result-box.compatible-10 { background-color: rgba(234, 179, 8, 0.1); border: 1px solid var(--warning); color: var(--warning); }
-    .result-box.compatible-flex { background-color: rgba(34, 197, 94, 0.1); border: 1px solid var(--accent); color: var(--accent); }
+    .result-box.compatible-warning { background-color: rgba(234, 179, 8, 0.1); border: 1px solid var(--warning); color: var(--warning); }
+    .result-box.compatible-ok { background-color: rgba(34, 197, 94, 0.1); border: 1px solid var(--accent); color: var(--accent); }
+    .result-box.compatible-flex { background-color: rgba(59, 130, 246, 0.1); border: 1px solid #3b82f6; color: #60a5fa; }
 
     .result-data { font-size: 0.85rem; color: var(--text-muted); margin: 10px 0; background: rgba(0,0,0,0.2); padding: 8px; border-radius: 6px; }
     .result-title { font-size: 1.1rem; font-weight: 800; margin-bottom: 6px; text-transform: uppercase; }
-    .result-desc { font-size: 0.9rem; color: #f8fafc; margin-top: 4px; }
+    .result-desc { font-size: 0.85rem; color: #f8fafc; margin-top: 6px; line-height: 1.5; text-align: justify; }
 
     .footer { text-align: center; margin-top: 24px; font-size: 0.8rem; color: var(--text-muted); border-top: 1px solid var(--border); padding-top: 16px; }
 
@@ -152,7 +166,7 @@
     .disclaimer { font-size: 0.7rem; color: #64748b; line-height: 1.4; text-align: justify; margin-bottom: 8px; }
     .version-tag { font-size: 0.65rem; color: #475569; font-weight: 600; letter-spacing: 0.5px; margin-top: 12px; }
 
-    /* MODAL ULTRA LIGERO */
+    /* MODAL */
     .modal-backdrop {
       display: none;
       position: fixed;
@@ -193,19 +207,19 @@
       <p>Verificación de Compatibilidad con Etanol</p>
     </div>
 
-    <!-- TIPO DE VEHÍCULO (CARRO / MOTO) -->
+    <!-- SELECTOR DE VEHÍCULO -->
     <div class="vehicle-selector">
       <button class="type-btn active" id="btn-car" onclick="setVehicleType('car')">🚗 Carro/SUV</button>
       <button class="type-btn" id="btn-moto" onclick="setVehicleType('moto')">🏍️ Motocicleta</button>
     </div>
 
-    <!-- PESTAÑAS SELECCIÓN DE MÉTODO -->
+    <!-- PESTAÑAS -->
     <div class="tabs">
       <button class="tab-btn active" id="tab-vin-btn" onclick="switchTab('vin')">Primeros 8 Dígitos VIN</button>
       <button class="tab-btn" id="tab-manual-btn" onclick="switchTab('manual')">Marca/Modelo/Año</button>
     </div>
 
-    <!-- FORMULARIO POR VIN -->
+    <!-- FORMULARIO VIN -->
     <div id="form-vin">
       <div class="form-group">
         <div class="label-with-tooltip">
@@ -213,12 +227,17 @@
           <div class="tooltip-container">
             <span class="tooltip-icon">?</span>
             <div class="tooltip-text" id="tooltip-content">
-              <!-- Dinámico según Carro o Moto -->
+              <!-- Dinámico -->
             </div>
           </div>
         </div>
         <input type="text" id="vin-input" placeholder="Ej. 1FA6P8CF" maxlength="8" style="text-transform: uppercase;">
-        <p class="note">🛡️ <b>Seguridad Total:</b> Solo requerimos los primeros 8 dígitos (marca y motor). No solicitamos tu número de serie ni almacenamos información de tu consulta.</p>
+        <p class="note">🛡️ <b>Seguridad Total:</b> Solo requerimos los primeros 8 dígitos (WMI/VDS). No solicitamos tu número de serie individual ni almacenamos tus búsquedas.</p>
+
+        <!-- AVISO TÉCNICO MOTOS -->
+        <div id="moto-vin-notice" class="tech-note" style="display: none;">
+          ℹ️ <b>Nota sobre Motocicletas:</b> En motos de baja cilindrada, la sección VDS del VIN suele codificar variantes de chasis y no el sistema de combustible. Para un diagnóstico óptimo, se sugiere la verificación por <b>Marca/Modelo/Año</b>.
+        </div>
       </div>
     </div>
 
@@ -227,7 +246,7 @@
       <div class="form-group">
         <label for="brand-select">Marca:</label>
         <select id="brand-select">
-          <!-- Opciones dinámicas según vehículo -->
+          <!-- Dinámico -->
         </select>
       </div>
       <div class="form-group">
@@ -244,7 +263,7 @@
 
     <button class="submit-btn" onclick="evaluar()">VERIFICAR COMPATIBILIDAD</button>
 
-    <!-- CAJA DE RESULTADOS -->
+    <!-- RESULTADO -->
     <div id="result-box" class="result-box">
       <div id="result-data" class="result-data"></div>
       <div id="result-title" class="result-title"></div>
@@ -262,11 +281,11 @@
         <span class="footer-link" onclick="reportarError()">Reporta un Problema</span>
       </div>
 
-      <div class="version-tag">v.0.0.1</div>
+      <div class="version-tag">v.0.0.2 — Motor de Evaluación Espectrométrica y Materiales</div>
     </div>
   </div>
 
-  <!-- MODAL PARA FAQS Y PRIVACIDAD -->
+  <!-- MODAL FAQS Y PRIVACIDAD -->
   <div id="info-modal" class="modal-backdrop" onclick="closeModalOnBackdrop(event)">
     <div class="modal-content">
       <div class="modal-header">
@@ -283,7 +302,6 @@
     let currentVehicle = 'car';
     let activeTab = 'vin';
 
-    // Listas de marcas
     const carBrands = ["Toyota", "Honda", "Mazda", "Nissan", "Hyundai", "Kia", "Mitsubishi", "Suzuki", "Chevrolet", "Ford", "Otra Marca"];
     const motoBrands = ["Honda", "Suzuki", "Yamaha", "Bajaj", "TVS", "Freedom / Italika / Haojue", "KTM", "Hero", "BMW Motorrad", "Royal Enfield", "Otra Marca"];
 
@@ -311,6 +329,8 @@
       document.getElementById('btn-moto').className = type === 'moto' ? 'type-btn active' : 'type-btn';
       
       document.getElementById('tooltip-content').innerHTML = type === 'car' ? carTooltip : motoTooltip;
+      document.getElementById('moto-vin-notice').style.display = (type === 'moto' && activeTab === 'vin') ? 'block' : 'none';
+
       populateBrands();
       document.getElementById('result-box').style.display = 'none';
     }
@@ -321,7 +341,7 @@
       const list = currentVehicle === 'car' ? carBrands : motoBrands;
       list.forEach(b => {
         let opt = document.createElement('option');
-        opt.value = b.toLowerCase().replace(/[^a-z0-9]/g, '');
+        opt.value = b;
         opt.innerText = b;
         select.appendChild(opt);
       });
@@ -341,9 +361,12 @@
       document.getElementById('form-manual').style.display = tab === 'manual' ? 'block' : 'none';
       document.getElementById('tab-vin-btn').className = tab === 'vin' ? 'tab-btn active' : 'tab-btn';
       document.getElementById('tab-manual-btn').className = tab === 'manual' ? 'tab-btn active' : 'tab-btn';
+      
+      document.getElementById('moto-vin-notice').style.display = (currentVehicle === 'moto' && tab === 'vin') ? 'block' : 'none';
       document.getElementById('result-box').style.display = 'none';
     }
 
+    // --- EVALUACIÓN TÉCNICA v0.0.2 ---
     function evaluar() {
       const resultBox = document.getElementById('result-box');
       const resultData = document.getElementById('result-data');
@@ -351,7 +374,7 @@
       const resultDesc = document.getElementById('result-desc');
 
       let datosIngresados = "";
-      let estatus = ""; 
+      let dictamen = {};
 
       if (activeTab === 'vin') {
         const vin = document.getElementById('vin-input').value.trim().toUpperCase();
@@ -359,15 +382,23 @@
           alert("Por favor ingresa exactamente los primeros 8 dígitos de tu VIN.");
           return;
         }
-        datosIngresados = `[${currentVehicle.toUpperCase()}] VIN Analizado: ${vin}`;
+        datosIngresados = `[${currentVehicle === 'car' ? 'CARRO' : 'MOTO'}] VIN Analizado: ${vin}`;
         
         const charEngine = vin.charAt(7);
         const flexChars = ['V', '2', '5', '8', 'K', '0', '3', 'F'];
         
         if (flexChars.includes(charEngine)) {
-          estatus = 'ge10';
+          dictamen = {
+            titulo: "COMPATIBLE ≥ E10 (FlexFuel / E85)",
+            clase: "compatible-flex",
+            desc: "Sistema homologado con sensores de oxígeno de banda ancha y elastómeros fluorados (FKM). Tolerancia nativa para mezclas de alto octanaje con etanol."
+          };
         } else {
-          estatus = 'le10';
+          dictamen = {
+            titulo: "COMPATIBLE ≤ E10",
+            clase: "compatible-ok",
+            desc: "Homologación estándar de fábrica. Mapeo de inyección ECU apto para compensar la densidad estequiométrica del E10. Líneas y sellos sintéticos resistentes."
+          };
         }
       } else {
         const brand = document.getElementById('brand-select').value;
@@ -379,40 +410,57 @@
           return;
         }
 
-        datosIngresados = `[${currentVehicle.toUpperCase()}] ${brand.toUpperCase()} ${model.toUpperCase()} (${year})`;
+        datosIngresados = `[${currentVehicle === 'car' ? 'CARRO' : 'MOTO'}] ${brand.toUpperCase()} ${model.toUpperCase()} (${year})`;
 
-        if (currentVehicle === 'moto') {
-          if (year < 2008) {
-            estatus = 'no';
+        // Lógica diferenciada por tipo y año
+        if (currentVehicle === 'car') {
+          if (['Ford', 'Chevrolet', 'GMC', 'RAM'].includes(brand) && year >= 2010) {
+            dictamen = {
+              titulo: "COMPATIBLE E10 / E85 (FlexFuel)",
+              clase: "compatible-flex",
+              desc: "Plataforma con calibración de motor y materiales aptos para etanol de alta concentración (E85)."
+            };
+          } else if (year >= 2001) {
+            dictamen = {
+              titulo: "COMPATIBLE ≤ 10% (E10)",
+              clase: "compatible-ok",
+              desc: "Vehículo compatible con normativas EPA/OBD-II post-2001. Sistema de combustible sellado apto para mezclas E10 sin degradación de empaques."
+            };
           } else {
-            estatus = 'le10';
+            dictamen = {
+              titulo: "NO COMPATIBLE (> E5)",
+              clase: "incompatible",
+              desc: "Riesgo de corrosión en aleaciones no anodizadas y degradación en mangueras de nitrilo (NBR). La naturaleza higroscópica del etanol puede causar condensación en el tanque."
+            };
           }
         } else {
-          if (year < 2001) {
-            estatus = 'no';
+          // Motocicletas
+          if (year >= 2018) {
+            dictamen = {
+              titulo: "COMPATIBLE ≤ 10% (Inyección Electrónica)",
+              clase: "compatible-ok",
+              desc: "Inyección PGM-FI/FI con sellos de fluorocarbono (Viton). Compatible con E10. Se recomienda no mantener la moto inactiva por más de 30 días con mezcla almacenada."
+            };
+          } else if (year >= 2009) {
+            dictamen = {
+              titulo: "PRECAUCIÓN E5 / E10 (Sistemas Carburados)",
+              clase: "compatible-warning",
+              desc: "Apto para uso continuo. En sistemas carburados, el etanol actúa como solvente: si el vehículo pasa semanas estancado, puede disolver resinas y corroer agujas de bronce."
+            };
           } else {
-            estatus = 'le10';
+            dictamen = {
+              titulo: "NO COMPATIBLE (> E0 / E2)",
+              clase: "incompatible",
+              desc: "Carburadores de latón/aluminio sensible y diafragmas de goma natural vulnerables al ataque químico y a la separación de fases (agua/etanol)."
+            };
           }
         }
       }
 
       resultData.innerText = datosIngresados;
-      resultBox.className = "result-box";
-
-      if (estatus === 'no') {
-        resultBox.classList.add('incompatible');
-        resultTitle.innerText = "NO COMPATIBLE";
-        resultDesc.innerText = "El uso de Etanol podría dañar los empaques, líneas o motor de tu vehículo.";
-      } else if (estatus === 'le10') {
-        resultBox.classList.add('compatible-10');
-        resultTitle.innerText = "COMPATIBLE ≤ 10%";
-        resultDesc.innerText = "El uso de Etanol es seguro en mezclas de hasta el 10% (E10).";
-      } else if (estatus === 'ge10') {
-        resultBox.classList.add('compatible-flex');
-        resultTitle.innerText = "COMPATIBLE ≥ 10%";
-        resultDesc.innerText = "Vehículo FlexFuel / Compatible con altos porcentajes de Etanol.";
-      }
-
+      resultBox.className = `result-box ${dictamen.clase}`;
+      resultTitle.innerText = dictamen.titulo;
+      resultDesc.innerText = dictamen.desc;
       resultBox.style.display = 'block';
     }
 
@@ -421,7 +469,6 @@
       window.open(formUrl, '_blank');
     }
 
-    // MODAL DE FAQS Y PRIVACIDAD
     function openModal(type) {
       const modal = document.getElementById('info-modal');
       const title = document.getElementById('modal-title');
@@ -462,7 +509,7 @@
       if (e.target.id === 'info-modal') closeModal();
     }
 
-    // Inicializar marcas
+    // Inicialización
     setVehicleType('car');
   </script>
 </body>
