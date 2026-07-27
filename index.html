@@ -78,7 +78,8 @@
     }
 
     /* TOOLTIP (?) */
-    .label-with-tooltip { display: flex; align-items: center; gap: 6px; }
+    .label-with-tooltip { display: flex; align-items: center; gap: 6px; margin-bottom: 6px; }
+    .label-with-tooltip label { margin-bottom: 0; }
     .tooltip-container { position: relative; display: inline-block; }
     .tooltip-icon {
       display: inline-flex;
@@ -93,6 +94,7 @@
       font-weight: bold;
       cursor: pointer;
       transition: all 0.2s ease;
+      flex-shrink: 0;
     }
     .tooltip-icon:hover { background-color: var(--accent); color: #000; }
     
@@ -193,14 +195,14 @@
 
     <!-- TIPO DE VEHÍCULO (CARRO / MOTO) -->
     <div class="vehicle-selector">
-      <button class="type-btn active" id="btn-car" onclick="setVehicleType('car')">🚗 Carro / SUV</button>
+      <button class="type-btn active" id="btn-car" onclick="setVehicleType('car')">🚗 Carro/SUV</button>
       <button class="type-btn" id="btn-moto" onclick="setVehicleType('moto')">🏍️ Motocicleta</button>
     </div>
 
     <!-- PESTAÑAS SELECCIÓN DE MÉTODO -->
     <div class="tabs">
       <button class="tab-btn active" id="tab-vin-btn" onclick="switchTab('vin')">Primeros 8 Dígitos VIN</button>
-      <button class="tab-btn" id="tab-manual-btn" onclick="switchTab('manual')">Marca / Modelo / Año</button>
+      <button class="tab-btn" id="tab-manual-btn" onclick="switchTab('manual')">Marca/Modelo/Año</button>
     </div>
 
     <!-- FORMULARIO POR VIN -->
