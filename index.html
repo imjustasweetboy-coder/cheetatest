@@ -168,9 +168,21 @@
     .result-title { font-size: 1.15rem; font-weight: 800; margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.3px; }
     .result-desc { font-size: 0.85rem; color: #f8fafc; margin-top: 8px; line-height: 1.5; text-align: justify; }
 
+    /* AVISO LEGAL DINÁMICO DENTRO DEL RESULTADO */
+    .disclaimer { 
+      display: none; 
+      font-size: 0.7rem; 
+      color: #64748b; 
+      line-height: 1.4; 
+      text-align: justify; 
+      margin-top: 16px; 
+      padding-top: 12px; 
+      border-top: 1px dashed var(--border); 
+    }
+
     .footer { text-align: center; margin-top: 24px; font-size: 0.8rem; color: var(--text-muted); border-top: 1px solid var(--border); padding-top: 16px; }
 
-    .footer-links { display: flex; justify-content: center; gap: 14px; margin-top: 12px; flex-wrap: wrap; }
+    .footer-links { display: flex; justify-content: center; gap: 14px; margin-top: 4px; flex-wrap: wrap; }
     .footer-link {
       color: var(--text-muted);
       font-weight: 600;
@@ -181,7 +193,6 @@
     }
     .footer-link:hover { color: #fff; }
     
-    .disclaimer { font-size: 0.7rem; color: #64748b; line-height: 1.4; text-align: justify; margin-bottom: 8px; }
     .version-tag { font-size: 0.65rem; color: #475569; font-weight: 600; letter-spacing: 0.5px; margin-top: 12px; }
 
     .modal-backdrop {
@@ -288,25 +299,26 @@
 
     <button class="submit-btn" onclick="evaluar()">VERIFICAR COMPATIBILIDAD</button>
 
-    <!-- RESULTADO -->
+    <!-- RESULTADO CON AVISO LEGAL DENTRO -->
     <div id="result-box" class="result-box">
       <div id="result-data" class="result-data"></div>
       <div id="result-title" class="result-title"></div>
       <div id="result-desc" class="result-desc"></div>
+      
+      <!-- AVISO LEGAL REVELADO SOLAMENTE AQUÍ -->
+      <p id="disclaimer" class="disclaimer">
+        ⚠️ <b>Aviso Legal:</b> CheetaTest™ es una herramienta interactiva automatizada con fines puramente informativos basada en especificaciones generales de fábrica. Si bien buscamos la mayor precisión, el algoritmo puede cometer errores. Consulta siempre el manual de propietario o la tapa de combustible de tu vehículo antes de cargar.
+      </p>
     </div>
 
     <div class="footer">
-      <p class="disclaimer">
-        ⚠️ <b>Aviso Legal:</b> CheetaTest™ es una herramienta interactiva automatizada con fines puramente informativos basada en especificaciones generales de fábrica. Si bien buscamos la mayor precisión, el algoritmo puede cometer errores. Consulta siempre el manual de propietario o la tapa de combustible de tu vehículo antes de cargar.
-      </p>
-
       <div class="footer-links">
         <span class="footer-link" onclick="openModal('faq')">Preguntas Frecuentes</span>
         <span class="footer-link" onclick="openModal('privacy')">Privacidad</span>
         <span class="footer-link" onclick="reportarError()">Reporta un Problema</span>
       </div>
 
-      <div class="version-tag">v.0.0.4</div>
+      <div class="version-tag">v.0.0.5</div>
     </div>
   </div>
 
@@ -375,7 +387,7 @@
       document.getElementById('flex-check-container').style.display = type === 'car' ? 'flex' : 'none';
 
       populateBrands();
-      document.getElementById('result-box').style.display = 'none';
+      ocultarResultado();
     }
 
     function populateBrands() {
@@ -406,15 +418,21 @@
       document.getElementById('tab-manual-btn').className = tab === 'manual' ? 'tab-btn active' : 'tab-btn';
       
       document.getElementById('moto-vin-notice').style.display = (currentVehicle === 'moto' && tab === 'vin') ? 'block' : 'none';
-      document.getElementById('result-box').style.display = 'none';
+      ocultarResultado();
     }
 
-    // --- EVALUACIÓN TÉCNICA BLINDADA v0.0.4 ---
+    function ocultarResultado() {
+      document.getElementById('result-box').style.display = 'none';
+      document.getElementById('disclaimer').style.display = 'none';
+    }
+
+    // --- EVALUACIÓN TÉCNICA v0.0.5 ---
     function evaluar() {
       const resultBox = document.getElementById('result-box');
       const resultData = document.getElementById('result-data');
       const resultTitle = document.getElementById('result-title');
       const resultDesc = document.getElementById('result-desc');
+      const disclaimer = document.getElementById('disclaimer');
 
       let datosIngresados = "";
       let dictamen = {};
@@ -513,7 +531,10 @@
       resultBox.className = `result-box ${dictamen.clase}`;
       resultTitle.innerText = dictamen.titulo;
       resultDesc.innerText = dictamen.desc;
+      
+      // MOSTRAR RESULTADO Y EL AVISO LEGAL JUNTO CON ÉL
       resultBox.style.display = 'block';
+      disclaimer.style.display = 'block';
     }
 
     function reportarError() {
