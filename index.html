@@ -24,7 +24,24 @@
     * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', system-ui, sans-serif; }
     body { background-color: var(--bg-color); color: var(--text); display: flex; justify-content: center; align-items: center; min-height: 100vh; padding: 20px; }
     
-    .container { background-color: var(--card-bg); border: 1px solid var(--border); border-radius: 16px; width: 100%; max-width: 480px; padding: 24px; box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.5); }
+    .container { background-color: var(--card-bg); border: 1px solid var(--border); border-radius: 16px; width: 100%; max-width: 480px; padding: 24px; box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.5); position: relative; }
+    
+    /* ENLACE / BOTÓN DE REGRESO A CHEETAFLEX.COM */
+    .back-home {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 0.78rem;
+      font-weight: 600;
+      margin-bottom: 16px;
+      transition: color 0.2s ease;
+    }
+    .back-home:hover {
+      color: var(--accent);
+    }
+
     .header { text-align: center; margin-bottom: 20px; }
     
     /* TÍTULO ESCALONADO E ITÁLICO */
@@ -171,7 +188,7 @@
     .tooltip-text li { margin-bottom: 3px; }
     .tooltip-container:hover .tooltip-text { visibility: visible; opacity: 1; }
 
-    /* BOTONES DE ACCIÓN (VERIFICAR Y REINICIAR) */
+    /* BOTONES DE ACCIÓN */
     .action-buttons {
       display: flex;
       gap: 8px;
@@ -226,7 +243,6 @@
     .result-title { font-size: 1.15rem; font-weight: 800; margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.3px; }
     .result-desc { font-size: 0.85rem; color: #f8fafc; margin-top: 8px; line-height: 1.5; text-align: justify; }
 
-    /* ELEMENTOS OCULTOS INICIALMENTE */
     .hidden {
       display: none !important;
     }
@@ -292,6 +308,11 @@
 <body>
 
   <div class="container">
+    <!-- BOTÓN REGRESO A CHEETAFLEX.COM -->
+    <a href="https://cheetaflex.com" class="back-home">
+      ← Volver a cheetaflex.com
+    </a>
+
     <div class="header">
       <h1>
         <span class="brand-cheeta">CHEETA</span><span class="brand-test">TEST</span><sup class="brand-tm">TM</sup>
@@ -364,7 +385,6 @@
     <!-- BOTONES DE ACCIÓN -->
     <div class="action-buttons">
       <button class="submit-btn" onclick="evaluar()">VERIFICAR COMPATIBILIDAD</button>
-      <!-- BOTÓN REINICIAR OCULTO INICIALMENTE -->
       <button class="reset-btn hidden" id="resetBtn" onclick="resetForm()" title="Reiniciar formulario">↺ Reset</button>
     </div>
 
@@ -494,18 +514,14 @@
     }
 
     function resetForm() {
-      // 1. Limpiar campos de texto e inputs
       document.getElementById('vin-input').value = '';
       document.getElementById('model-input').value = '';
       document.getElementById('brand-select').value = '';
       document.getElementById('year-select').value = '';
       document.getElementById('is-flex-check').checked = false;
 
-      // 2. Restablecer vistas a selector de "Carro" y pestaña "Por VIN"
       setVehicleType('car');
       switchTab('vin');
-
-      // 3. Ocultar resultados y el botón reset
       ocultarResultado();
     }
 
