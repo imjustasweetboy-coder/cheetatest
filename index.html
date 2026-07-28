@@ -26,11 +26,25 @@
     
     .container { background-color: var(--card-bg); border: 1px solid var(--border); border-radius: 16px; width: 100%; max-width: 480px; padding: 24px; box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.5); position: relative; }
     
-    /* BOTÓN HOME (ÍCONO CASA) */
+    .header { text-align: center; margin-bottom: 20px; }
+
+    /* CONTENEDOR FLEX DE CABECERA (Evita que la casita choque con el texto) */
+    .header-bar {
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      margin-bottom: 8px;
+      padding: 0 40px; /* Margen de seguridad para que el titulo respete el icono */
+    }
+
+    /* BOTÓN HOME (ÍCONO CASA) REPOSICIONADO */
     .home-link {
       position: absolute;
-      top: 20px;
-      left: 20px;
+      left: 0;
+      top: 50%;
+      transform: translateY(-50%);
       color: var(--text-muted);
       display: flex;
       align-items: center;
@@ -53,12 +67,10 @@
       height: 18px;
       fill: currentColor;
     }
-
-    .header { text-align: center; margin-bottom: 20px; }
     
-    /* TÍTULO ESCALONADO E ITÁLICO */
+    /* TÍTULO ESCALONADO E ITÁLICO RESPONSIVO */
     .header h1 { 
-      font-size: 2.1rem; 
+      font-size: clamp(1.6rem, 6.5vw, 2.1rem); 
       font-weight: 900; 
       font-style: italic;
       display: inline-flex; 
@@ -66,7 +78,7 @@
       justify-content: center; 
       gap: 2px;
       line-height: 1;
-      margin-bottom: 8px;
+      margin-bottom: 0;
     }
 
     .header h1 span.brand-cheeta { 
@@ -97,6 +109,7 @@
       white-space: nowrap; 
       overflow: hidden; 
       text-overflow: ellipsis; 
+      margin-top: 6px;
     }
 
     .vehicle-selector { display: flex; background: #0f172a; padding: 4px; border-radius: 10px; margin-bottom: 16px; border: 1px solid var(--border); }
@@ -320,17 +333,19 @@
 <body>
 
   <div class="container">
-    <!-- ÍCONO DE CASA PARA NAVEGAR A CHEETAFLEX.COM -->
-    <a href="https://cheetaflex.com" class="home-link" title="Volver a CheetaFlex.com">
-      <svg viewBox="0 0 24 24">
-        <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/>
-      </svg>
-    </a>
-
     <div class="header">
-      <h1>
-        <span class="brand-cheeta">CHEETA</span><span class="brand-test">TEST</span><sup class="brand-tm">TM</sup>
-      </h1>
+      <!-- BARRA DE ENCABEZADO CON CASITA Y TÍTULO UNIFICADOS -->
+      <div class="header-bar">
+        <a href="https://cheetaflex.com" class="home-link" title="Volver a CheetaFlex.com">
+          <svg viewBox="0 0 24 24">
+            <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/>
+          </svg>
+        </a>
+
+        <h1>
+          <span class="brand-cheeta">CHEETA</span><span class="brand-test">TEST</span><sup class="brand-tm">TM</sup>
+        </h1>
+      </div>
       <p>Verificación de Compatibilidad con Etanol</p>
     </div>
 
