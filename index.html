@@ -270,7 +270,6 @@
       white-space: normal;
     }
 
-    /* CLASE ACTIVADA POR JS EN PANTALLAS TÁCTILES */
     .tooltip-text.show {
       display: block !important;
     }
@@ -353,15 +352,16 @@
       display: none !important;
     }
 
-    .disclaimer { 
+    /* AVISO LEGAL EXTERNO (FUERA DE LA CAJA DE RESULTADO) */
+    .disclaimer-external { 
       display: none; 
-      font-size: 0.7rem; 
-      color: #64748b; 
+      font-size: 0.72rem; 
+      color: var(--text-muted); 
       line-height: 1.4; 
       text-align: justify; 
-      margin-top: 16px; 
-      padding-top: 12px; 
-      border-top: 1px dashed var(--border); 
+      margin-top: 14px; 
+      padding: 0 4px;
+      opacity: 0.85;
     }
 
     .footer { text-align: center; margin-top: 24px; font-size: 0.8rem; color: var(--text-muted); border-top: 1px solid var(--border); padding-top: 16px; }
@@ -500,16 +500,17 @@
       <button class="reset-btn hidden" id="resetBtn" onclick="resetForm()" title="Reiniciar formulario">↺ Reset</button>
     </div>
 
-    <!-- RESULTADO CON AVISO LEGAL DENTRO -->
+    <!-- RESULTADO LIMPIO (SIN AVISO LEGAL DENTRO) -->
     <div id="result-box" class="result-box">
       <div id="result-data" class="result-data"></div>
       <div id="result-title" class="result-title"></div>
       <div id="result-desc" class="result-desc"></div>
-      
-      <p id="disclaimer" class="disclaimer">
-        ⚠️ <b>Aviso Legal:</b> CheetaTest™ es una herramienta interactiva automatizada con fines puramente informativos basada en especificaciones generales de fábrica. Si bien buscamos la mayor precisión, el algoritmo puede cometer errores. Consulta siempre el manual de propietario o la tapa de combustible de tu vehículo antes de cargar.
-      </p>
     </div>
+
+    <!-- AVISO LEGAL EXTERNO (DISCRETO ABAJO) -->
+    <p id="disclaimer" class="disclaimer-external">
+      ⚠️ <b>Aviso Legal:</b> CheetaTest™ es una herramienta interactiva automatizada con fines puramente informativos basada en especificaciones generales de fábrica. Si bien buscamos la mayor precisión, el algoritmo puede cometer errores. Consulta siempre el manual de propietario o la tapa de combustible de tu vehículo antes de cargar.
+    </p>
 
     <div class="footer">
       <div class="footer-links">
