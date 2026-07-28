@@ -26,20 +26,32 @@
     
     .container { background-color: var(--card-bg); border: 1px solid var(--border); border-radius: 16px; width: 100%; max-width: 480px; padding: 24px; box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.5); position: relative; }
     
-    /* ENLACE / BOTÓN DE REGRESO A CHEETAFLEX.COM */
-    .back-home {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
+    /* BOTÓN HOME (ÍCONO CASA) */
+    .home-link {
+      position: absolute;
+      top: 20px;
+      left: 20px;
       color: var(--text-muted);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 36px;
+      height: 36px;
+      border-radius: 8px;
+      background-color: #0f172a;
+      border: 1px solid var(--border);
+      transition: all 0.2s ease;
       text-decoration: none;
-      font-size: 0.78rem;
-      font-weight: 600;
-      margin-bottom: 16px;
-      transition: color 0.2s ease;
     }
-    .back-home:hover {
-      color: var(--accent);
+    .home-link:hover {
+      color: #ffffff;
+      border-color: var(--accent);
+      background-color: rgba(34, 197, 94, 0.1);
+    }
+    .home-link svg {
+      width: 18px;
+      height: 18px;
+      fill: currentColor;
     }
 
     .header { text-align: center; margin-bottom: 20px; }
@@ -308,9 +320,11 @@
 <body>
 
   <div class="container">
-    <!-- BOTÓN REGRESO A CHEETAFLEX.COM -->
-    <a href="https://cheetaflex.com" class="back-home">
-      ← Volver a cheetaflex.com
+    <!-- ÍCONO DE CASA PARA NAVEGAR A CHEETAFLEX.COM -->
+    <a href="https://cheetaflex.com" class="home-link" title="Volver a CheetaFlex.com">
+      <svg viewBox="0 0 24 24">
+        <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/>
+      </svg>
     </a>
 
     <div class="header">
