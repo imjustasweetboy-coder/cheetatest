@@ -171,8 +171,48 @@
     .tooltip-text li { margin-bottom: 3px; }
     .tooltip-container:hover .tooltip-text { visibility: visible; opacity: 1; }
 
-    .submit-btn { width: 100%; padding: 14px; background-color: var(--accent); color: #000; border: none; border-radius: 8px; font-weight: 700; font-size: 1rem; cursor: pointer; transition: background-color 0.2s; margin-top: 10px; }
+    /* BOTONES DE ACCIÓN (VERIFICAR Y REINICIAR) */
+    .action-buttons {
+      display: flex;
+      gap: 8px;
+      margin-top: 10px;
+    }
+
+    .submit-btn { 
+      flex: 1;
+      padding: 14px; 
+      background-color: var(--accent); 
+      color: #000; 
+      border: none; 
+      border-radius: 8px; 
+      font-weight: 700; 
+      font-size: 0.95rem; 
+      cursor: pointer; 
+      transition: background-color 0.2s; 
+    }
     .submit-btn:hover { background-color: var(--accent-hover); }
+
+    .reset-btn {
+      padding: 14px 16px;
+      background-color: #0f172a;
+      border: 1px solid var(--border);
+      color: var(--text-muted);
+      border-radius: 8px;
+      font-weight: 700;
+      font-size: 0.9rem;
+      cursor: pointer;
+      transition: all 0.2s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+    }
+
+    .reset-btn:hover {
+      border-color: #ef4444;
+      color: #ef4444;
+      background-color: rgba(239, 68, 68, 0.05);
+    }
 
     .result-box { display: none; margin-top: 24px; padding: 20px; border-radius: 12px; text-align: center; animation: fadeIn 0.3s ease-in-out; }
     @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
@@ -185,6 +225,11 @@
     .result-data { font-size: 0.85rem; color: var(--text-muted); margin: 10px 0; background: rgba(0,0,0,0.2); padding: 8px; border-radius: 6px; }
     .result-title { font-size: 1.15rem; font-weight: 800; margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.3px; }
     .result-desc { font-size: 0.85rem; color: #f8fafc; margin-top: 8px; line-height: 1.5; text-align: justify; }
+
+    /* ELEMENTOS OCULTOS INICIALMENTE */
+    .hidden {
+      display: none !important;
+    }
 
     .disclaimer { 
       display: none; 
@@ -316,7 +361,12 @@
       </div>
     </div>
 
-    <button class="submit-btn" onclick="evaluar()">VERIFICAR COMPATIBILIDAD</button>
+    <!-- BOTONES DE ACCIÓN -->
+    <div class="action-buttons">
+      <button class="submit-btn" onclick="evaluar()">VERIFICAR COMPATIBILIDAD</button>
+      <!-- BOTÓN REINICIAR OCULTO INICIALMENTE -->
+      <button class="reset-btn hidden" id="resetBtn" onclick="resetForm()" title="Reiniciar formulario">↺ Reset</button>
+    </div>
 
     <!-- RESULTADO CON AVISO LEGAL DENTRO -->
     <div id="result-box" class="result-box">
@@ -336,7 +386,7 @@
         <span class="footer-link" onclick="reportarError()">Reporta un Problema</span>
       </div>
 
-      <div class="version-tag">v.0.0.7</div>
+      <div class="version-tag">v.0.0.8</div>
     </div>
   </div>
 
@@ -440,6 +490,23 @@
     function ocultarResultado() {
       document.getElementById('result-box').style.display = 'none';
       document.getElementById('disclaimer').style.display = 'none';
+      document.getElementById('resetBtn').classList.add('hidden');
+    }
+
+    function resetForm() {
+      // 1. Limpiar campos de texto e inputs
+      document.getElementById('vin-input').value = '';
+      document.getElementById('model-input').value = '';
+      document.getElementById('brand-select').value = '';
+      document.getElementById('year-select').value = '';
+      document.getElementById('is-flex-check').checked = false;
+
+      // 2. Restablecer vistas a selector de "Carro" y pestaña "Por VIN"
+      setVehicleType('car');
+      switchTab('vin');
+
+      // 3. Ocultar resultados y el botón reset
+      ocultarResultado();
     }
 
     function evaluar() {
@@ -547,6 +614,7 @@
       
       resultBox.style.display = 'block';
       disclaimer.style.display = 'block';
+      document.getElementById('resetBtn').classList.remove('hidden');
     }
 
     function reportarError() {
