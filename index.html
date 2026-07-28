@@ -3,7 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%230f172a'/><path d='M25 65 L45 35 L60 50 L75 25 L65 75 Z' fill='none' stroke='%2322c55e' stroke-width='8' stroke-linecap='round' stroke-linejoin='round'/><circle cx='70' cy='30' r='6' fill='%2322c55e'/></svg>">
+  
+  <!-- FAVICON "EE" ESCALONADO (Blanco / Verde Neón) -->
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%230f172a'/><g transform='skewX(-14)' font-family='Arial Black, sans-serif' font-weight='900' font-size='62'><text x='24' y='64' fill='%23ffffff'>E</text><text x='58' y='76' fill='%2322c55e'>E</text></g></svg>">
+  
   <title>CheetaTest™</title>
   <style>
     :root {
@@ -24,25 +27,39 @@
     .container { background-color: var(--card-bg); border: 1px solid var(--border); border-radius: 16px; width: 100%; max-width: 480px; padding: 24px; box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.5); }
     .header { text-align: center; margin-bottom: 20px; }
     
+    /* TÍTULO ESCALONADO E ITÁLICO */
     .header h1 { 
-      font-size: 1.8rem; 
-      font-weight: 800; 
-      color: #fff; 
-      margin-bottom: 4px; 
+      font-size: 2.1rem; 
+      font-weight: 900; 
+      font-style: italic;
       display: inline-flex; 
-      align-items: flex-start; 
+      align-items: center; 
       justify-content: center; 
+      gap: 2px;
+      line-height: 1;
+      margin-bottom: 8px;
     }
-    .header h1 em { font-style: italic; font-weight: 900; }
-    .header h1 span { color: var(--accent); font-style: normal; }
+
+    .header h1 span.brand-cheeta { 
+      color: #ffffff; 
+      transform: translateY(-4px);
+      display: inline-block;
+    }
+
+    .header h1 span.brand-test { 
+      color: var(--accent); 
+      transform: translateY(4px);
+      display: inline-block;
+    }
+
     .header h1 .brand-tm {
-      font-size: 0.5rem;
-      font-weight: 600;
+      font-size: 0.55rem;
+      font-weight: 700;
       color: var(--text-muted);
-      opacity: 0.5;
+      opacity: 0.6;
       margin-left: 2px;
-      top: -0.2em;
-      position: relative;
+      align-self: flex-start;
+      transform: translateY(-2px);
     }
     
     .header p { 
@@ -169,7 +186,6 @@
     .result-title { font-size: 1.15rem; font-weight: 800; margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.3px; }
     .result-desc { font-size: 0.85rem; color: #f8fafc; margin-top: 8px; line-height: 1.5; text-align: justify; }
 
-    /* AVISO LEGAL DINÁMICO DENTRO DEL RESULTADO */
     .disclaimer { 
       display: none; 
       font-size: 0.7rem; 
@@ -232,7 +248,9 @@
 
   <div class="container">
     <div class="header">
-      <h1><em>CHEETA</em><span>TEST</span><sup class="brand-tm">TM</sup></h1>
+      <h1>
+        <span class="brand-cheeta">CHEETA</span><span class="brand-test">TEST</span><sup class="brand-tm">TM</sup>
+      </h1>
       <p>Verificación de Compatibilidad con Etanol</p>
     </div>
 
@@ -306,7 +324,6 @@
       <div id="result-title" class="result-title"></div>
       <div id="result-desc" class="result-desc"></div>
       
-      <!-- AVISO LEGAL REVELADO SOLAMENTE AQUÍ -->
       <p id="disclaimer" class="disclaimer">
         ⚠️ <b>Aviso Legal:</b> CheetaTest™ es una herramienta interactiva automatizada con fines puramente informativos basada en especificaciones generales de fábrica. Si bien buscamos la mayor precisión, el algoritmo puede cometer errores. Consulta siempre el manual de propietario o la tapa de combustible de tu vehículo antes de cargar.
       </p>
@@ -319,7 +336,7 @@
         <span class="footer-link" onclick="reportarError()">Reporta un Problema</span>
       </div>
 
-      <div class="version-tag">v.0.0.5</div>
+      <div class="version-tag">v.0.0.7</div>
     </div>
   </div>
 
@@ -343,7 +360,6 @@
     const carBrands = ["Volkswagen", "Chevrolet", "Ford", "Toyota", "Honda", "Hyundai", "Fiat", "Nissan", "GMC / RAM", "Mazda", "Mitsubishi", "Suzuki", "Otra Marca"];
     const motoBrands = ["Bajaj", "Honda", "TVS", "Yamaha", "Suzuki", "Freedom / Italika / Haojue", "KTM", "Hero", "BMW Motorrad", "Royal Enfield", "Otra Marca"];
 
-    // Modelos reconocidos por defecto como FlexFuel / TotalFlex
     const knownFlexModels = [
       "SAVEIRO", "GOL", "FOX", "VOYAGE", "SURAN",
       "TRACKER", "ONIX", "PRISMA", "SPIN", "S10", "CELTA", "MONTANA",
@@ -354,7 +370,6 @@
       "RENEGADE FLEX", "COMPASS FLEX"
     ];
 
-    // Modelos populares de motos con inyección electrónica (FI) habituales en la región
     const popularMotosFI = [
       "PULSAR", "APACHE", "GIXXER", "FZ", "DUKE", "DOMINAR", 
       "NXT", "CB190", "R15", "XR190", "INTRUDER", "AVENGER"
@@ -427,7 +442,6 @@
       document.getElementById('disclaimer').style.display = 'none';
     }
 
-    // --- EVALUACIÓN TÉCNICA v0.0.5 ---
     function evaluar() {
       const resultBox = document.getElementById('result-box');
       const resultData = document.getElementById('result-data');
@@ -481,7 +495,6 @@
 
           datosIngresados = `[CARRO] ${brand.toUpperCase()} ${model ? modelUpper : 'GENERAL'} (${year}) ${isFlexExplicit ? '⚡ [Flex marcado]' : ''}`;
 
-          // BLINDAJE CONTRA ERROR HUMANO: La antigüedad impera sobre cualquier casilla
           if (year < 2001) {
             dictamen = {
               titulo: "🚨 DEFINITIVAMENTE NO USAR ETANOL",
@@ -502,7 +515,6 @@
             };
           }
         } else {
-          // EVALUACIÓN DE MOTOCICLETAS
           const isPopularFI = popularMotosFI.some(m => modelUpper.includes(m));
           datosIngresados = `[MOTO] ${brand.toUpperCase()} ${model ? modelUpper : 'GENERAL'} (${year})`;
 
@@ -533,7 +545,6 @@
       resultTitle.innerText = dictamen.titulo;
       resultDesc.innerText = dictamen.desc;
       
-      // MOSTRAR RESULTADO Y EL AVISO LEGAL JUNTO CON ÉL
       resultBox.style.display = 'block';
       disclaimer.style.display = 'block';
     }
