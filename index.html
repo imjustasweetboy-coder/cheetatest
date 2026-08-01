@@ -558,7 +558,7 @@
         <span class="footer-link" onclick="reportarError()">Reporta un Problema</span>
       </div>
 
-      <div class="version-tag">v.0.0.9</div>
+      <div class="version-tag">v.0.1.0</div>
     </div>
   </div>
 
@@ -580,22 +580,22 @@
     let activeTab = 'vin';
 
     function compartirHerramienta() {
-  const shareData = {
-    title: 'NombreDeTuHerramienta™',
-    text: 'Descripción corta de lo que hace esta herramienta.',
-    url: window.location.href
-  };
+      const shareData = {
+        title: 'CheetaTest™',
+        text: 'Verifica la compatibilidad de tu vehículo con etanol.',
+        url: window.location.href
+      };
 
-  if (navigator.share) {
-    navigator.share(shareData).catch(() => {});
-  } else {
-    navigator.clipboard.writeText(window.location.href).then(() => {
-      alert("¡Enlace copiado al portapapeles!");
-    }).catch(() => {
-      alert("No se pudo copiar el enlace.");
-    });
-  }
-}
+      if (navigator.share) {
+        navigator.share(shareData).catch(() => {});
+      } else {
+        navigator.clipboard.writeText(window.location.href).then(() => {
+          alert("¡Enlace copiado al portapapeles!");
+        }).catch(() => {
+          alert("No se pudo copiar el enlace.");
+        });
+      }
+    }
 
     const carBrands = ["Volkswagen", "Chevrolet", "Ford", "Toyota", "Honda", "Hyundai", "Fiat", "Nissan", "GMC / RAM", "Mazda", "Mitsubishi", "Suzuki", "Otra Marca"];
     const motoBrands = ["Bajaj", "Honda", "TVS", "Yamaha", "Suzuki", "Freedom / Italika / Haojue", "KTM", "Hero", "BMW Motorrad", "Royal Enfield", "Otra Marca"];
@@ -720,7 +720,7 @@
       setVehicleType('car');
       switchTab('vin');
       ocultarResultado();
-      document.getElementById('shareBtn').classList.remove('hidden');
+      document.getElementById('shareBtn').classList.add('hidden');
     }
 
     function evaluar() {
@@ -741,20 +741,24 @@
         }
         datosIngresados = `[${currentVehicle === 'car' ? 'CARRO' : 'MOTO'}] VIN Analizado: ${vin}`;
         
-        const charEngine = vin.charAt(7);
-        const flexChars = ['V', '2', '5', '8', 'K', '0', '3', 'F', 'Z', '9'];
-        
-        if (flexChars.includes(charEngine)) {
+        // Lista controlada de prefijos VDS confirmados para variantes FlexFuel reales (ej. origen Brasil / EE.UU. FFV)
+        const knownFlexVDS = [
+          "3FA6P08", "1FA6P08", "1FTFW1E", "3C6UR5FL", "1GCCSKC", "9BD178"
+        ];
+
+        const isVerifiedFlex = knownFlexVDS.some(vds => vin.startsWith(vds));
+
+        if (isVerifiedFlex) {
           dictamen = {
             titulo: "✅ SÍ PUEDES USAR ETANOL (FlexFuel / E85)",
             clase: "compatible-flex",
-            desc: "Tu vehículo cuenta con calibración de fábrica FlexFuel (detectado por VIN). Tu motor, sensores y componentes de combustible están totalmente diseñados para operar tanto con mezclas estándar (E10) como con concentraciones elevadas."
+            desc: "Tu vehículo cuenta con calibración de fábrica FlexFuel (detectado por VIN). Tu motor, sensores y componentes de combustible están totalmente diseñados para operar tanto con mezclas estándar (E10) como con concentraciones elevadas (E85)."
           };
         } else {
           dictamen = {
-            titulo: "✅ SÍ PUEDES USAR ETANOL (Hasta 10%)",
+            titulo: "✅ COMPATIBLE HASTA E10 (Mezcla Estándar)",
             clase: "compatible-ok",
-            desc: "Tu vehículo cuenta con homologación estándar de fábrica para mezclas E10 (10% etanol y 90% gasolina). Puedes usar esta mezcla con total confianza."
+            desc: "Tu vehículo cuenta con homologación de fábrica para mezclas de hasta E10 (10% etanol). Es totalmente seguro para las gasolinas comerciales estándar. Para utilizar concentraciones mayores como E85 de forma óptima, los motores convencionales requieren integración tecnológica de sensor y gestión FlexFuel."
           };
         }
       } else {
@@ -790,7 +794,7 @@
             };
           } else {
             dictamen = {
-              titulo: "✅ SÍ PUEDES USAR ETANOL (Hasta 10%)",
+              titulo: "✅ COMPATIBLE HASTA E10 (Mezcla Estándar)",
               clase: "compatible-ok",
               desc: "Tu vehículo está preparado de fábrica para soportar mezclas E10 (10% etanol). Sus empaques sintéticos e inyección multipunto no sufrirán degradación."
             };
@@ -807,7 +811,7 @@
             };
           } else if (year >= 2018 || isPopularFI) {
             dictamen = {
-              titulo: "✅ SÍ PUEDES USAR ETANOL (Hasta 10%)",
+              titulo: "✅ COMPATIBLE HASTA E10 (Mezcla Estándar)",
               clase: "compatible-ok",
               desc: `Tu moto (${model ? modelUpper : 'de inyección / reciente'}) cuenta con inyección electrónica y empaques sintéticos que toleran perfectamente mezclas E10. 💡 Consejo motero: Si vas a dejar la moto guardada sin usar por más de 3 semanas, procura dejar el tanque con poca gasolina o consumirla antes para evitar condensación.`
             };
